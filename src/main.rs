@@ -21,38 +21,48 @@ fn main() {
         .run()
 }
 
+#[derive(Component)]
+struct Player {
+    speed: f32,
+}
+
 fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn(Camera2dBundle::default());
 
     let texture = asset_server.load("char.png");
 
-    commands.spawn(SpriteBundle {
-        sprite: Sprite {
-            custom_size: Some(Vec2::splat(100.0)),
+    commands.spawn((
+        SpriteBundle {
+            sprite: Sprite {
+                custom_size: Some(Vec2::splat(100.0)),
+                ..default()
+            },
+            texture,
             ..default()
         },
-        texture,
-        ..default()
-    });
+        Player { speed: 100.0 },
+    ));
 }
 
 fn char_movement(
-    mut characters: Query<(&mut Transform, &Sprite)>,
+    mut characters: Query<(&mut Transform, &Player)>,
     input: Res<Input<KeyCode>>,
     time: Res<Time>,
 ) {
-    for (mut transf, _) in &mut characters {
+    for (mut transformation, player) in &mut characters {
+        let movement_amount = player.speed * time.delta_seconds();
+
         if input.pressed(KeyCode::W) {
-            transf.translation.y += 100.0 * time.delta_seconds();
+            transformation.translation.y += movement_amount
         }
         if input.pressed(KeyCode::S) {
-            transf.translation.y -= 100.0 * time.delta_seconds();
+            transformation.translation.y -= movement_amount
         }
         if input.pressed(KeyCode::A) {
-            transf.translation.x -= 100.0 * time.delta_seconds();
+            transformation.translation.x -= movement_amount
         }
         if input.pressed(KeyCode::D) {
-            transf.translation.x += 100.0 * time.delta_seconds();
+            transformation.translation.x += movement_amount
         }
     }
 }
