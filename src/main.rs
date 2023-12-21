@@ -1,6 +1,8 @@
 mod char;
+mod diamond;
 
 use crate::char::{char_movement, PlayerPlugin};
+use crate::diamond::DiamondPlugin;
 use bevy::prelude::*;
 
 fn main() {
@@ -19,7 +21,7 @@ fn main() {
                 })
                 .build(),
         )
-        .add_plugins(PlayerPlugin)
+        .add_plugins((PlayerPlugin, DiamondPlugin))
         .add_systems(Startup, camera_setup)
         .add_systems(Update, char_movement)
         .run()
