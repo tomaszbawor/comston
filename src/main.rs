@@ -1,4 +1,5 @@
 mod char;
+mod collectible;
 mod diamond;
 
 use crate::char::{char_movement, PlayerPlugin};

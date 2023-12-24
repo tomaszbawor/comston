@@ -1,3 +1,4 @@
+use crate::collectible::{collect_collectible, Collectible};
 use bevy::prelude::*;
 
 pub struct DiamondPlugin;
@@ -5,15 +6,17 @@ pub struct DiamondPlugin;
 impl Plugin for DiamondPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, setup_diamond_spawner)
-            .add_systems(Update, spawn_diamonds);
+            .add_systems(Update, (spawn_diamonds, collect_collectible));
     }
 }
 
 #[derive(Component)]
 struct Diamond {
-    position: Vec2,
     timer: Timer,
 }
+
+#[derive(Component)]
+pub struct Position(pub Vec2);
 
 #[derive(Resource)]
 struct DiamondSpawnerConfig {
@@ -58,9 +61,10 @@ fn spawn_diamonds(
             ..default()
         },
         Diamond {
-            position: Vec2::new(x_pos, y_pos), // TODO: randomize
             timer: Timer::from_seconds(5.0, TimerMode::Once),
         },
+        Collectible,
+        Position(Vec2::new(x_pos, y_pos)),
     ));
 }
 
