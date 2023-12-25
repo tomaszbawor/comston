@@ -23,7 +23,7 @@ struct DiamondSpawnerConfig {
     timer: Timer,
 }
 
-const MAX_DIAMOND_COUNT: usize = 3;
+const MAX_DIAMOND_COUNT: usize = 100;
 
 fn spawn_diamonds(
     mut commands: Commands,
@@ -53,7 +53,7 @@ fn spawn_diamonds(
     commands.spawn((
         SpriteBundle {
             sprite: Sprite {
-                custom_size: Some(Vec2::splat(50.0)),
+                custom_size: Some(Vec2::splat(30.0)),
                 ..default()
             },
             texture,
@@ -70,6 +70,6 @@ fn spawn_diamonds(
 
 fn setup_diamond_spawner(mut commands: Commands) {
     commands.insert_resource(DiamondSpawnerConfig {
-        timer: Timer::from_seconds(3.0, TimerMode::Repeating),
+        timer: Timer::from_seconds(1.0, TimerMode::Repeating),
     });
 }

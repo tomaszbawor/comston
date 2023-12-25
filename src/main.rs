@@ -3,6 +3,7 @@ mod collectible;
 mod diamond;
 
 use crate::char::{char_movement, PlayerPlugin};
+use crate::collectible::CollectiblePlugin;
 use crate::diamond::DiamondPlugin;
 use bevy::prelude::*;
 
@@ -22,7 +23,7 @@ fn main() {
                 })
                 .build(),
         )
-        .add_plugins((PlayerPlugin, DiamondPlugin))
+        .add_plugins((PlayerPlugin, DiamondPlugin, CollectiblePlugin))
         .add_systems(Startup, camera_setup)
         .add_systems(Update, char_movement)
         .run()
